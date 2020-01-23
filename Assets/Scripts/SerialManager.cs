@@ -6,10 +6,13 @@ using System;
 
 public class SerialManager : MonoBehaviour
 {
-    private string chaine = "COM6";
+    [SerializeField] string chaine = "COM6";
+
     SerialPort serialPort;
 
     private float[] fingersRotations = new float[45];
+    private int[] servoEnable = new int[5];
+    private string data;
 
 
     // Start is called before the first frame update
@@ -21,6 +24,11 @@ public class SerialManager : MonoBehaviour
         serialPort.StopBits = StopBits.One;
         serialPort.Open();
         serialPort.ReadTimeout = 15;
+
+        for(int i=0; i<5; i++)
+        {
+            servoEnable[i] = 0;
+        }
         
     }
 
@@ -30,7 +38,10 @@ public class SerialManager : MonoBehaviour
         if (serialPort.IsOpen)
         {
             try
-            {               
+            {
+                data = "data";
+                data += " " + servoEnable[0] + " " + servoEnable[1] + " " + servoEnable[2] + " " + servoEnable[3] + " " + servoEnable[4];
+                serialPort.Write(data);
                 string[] rotations = serialPort.ReadLine().Split(null);
 
                 for(int i = 0; i<rotations.Length; i++)
@@ -41,7 +52,7 @@ public class SerialManager : MonoBehaviour
             }
             catch (System.Exception)
             {
-                Debug.Log("something");
+                //Debug.Log("something");
             }
         }
     }
@@ -56,4 +67,9 @@ public class SerialManager : MonoBehaviour
         return fingersRotations;
 
     }    
+
+    public void SetServoEnable(int index, int etat) 
+    {
+        servoEnable[index] = etat;
+    }
 }

@@ -37,13 +37,12 @@ public class Phalange : MonoBehaviour
     {
         while (true)
         {
-            yield return new WaitForSeconds(0.02f);
+            yield return new WaitForSeconds(0.001f);
             fingersRotations = serialManager.GetFingersRotation();
 
             if (phalange == PhalangeObject.thumb1)
             {
                 transform.localEulerAngles = new Vector3(fingersRotations[0],fingersRotations[1],fingersRotations[2]);
-                //Debug.Log(transform.localEulerAngles);
             }
             else if (phalange == PhalangeObject.thumb2)
             {
